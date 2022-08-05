@@ -1,0 +1,19 @@
+<div
+    class="editor | bg-slate-300 text-slate-900 rounded-lg p-2 border-2 border-transparent box-border"
+    [class]="{
+        'border-blue-400': isFocused
+    }"
+>
+    <div class="format-controls">
+        <button
+            *ngFor="let btn of formattingControls"
+            (click)="execEditorChain(btn.action)"
+            [class.isActive]="btn.isActive?.(editor)"
+            [innerHTML]="btn.slot"
+            [title]="btn.title"
+            [attr.data-test-name]="'formatting-btn-' + btn.testName"
+        ></button>
+    </div>
+
+    <tiptap-editor [editor]="editor"></tiptap-editor>
+</div>

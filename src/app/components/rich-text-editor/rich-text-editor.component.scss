@@ -1,0 +1,53 @@
+.format-controls {
+    @apply mb-2;
+}
+.ProseMirror,
+.rendered-content {
+    @apply outline-none;
+
+    h1 {
+        @apply text-3xl font-bold mt-4 mb-2;
+    }
+    h2 {
+        @apply text-2xl font-bold mt-3 mb-1;
+    }
+    h3 {
+        @apply text-xl font-bold mt-2 mb-1;
+    }
+
+    ul,
+    ol {
+        @apply ml-5;
+    }
+    ul li {
+        @apply list-disc;
+    }
+    ol li {
+        @apply list-decimal;
+    }
+    hr {
+        @apply my-2 border-slate-400;
+    }
+    p {
+        @apply min-h-[1.5rem];
+    }
+    code {
+        @apply bg-slate-700 text-slate-200 rounded-md px-1 py-0.5;
+    }
+    pre code {
+        @apply block px-3 py-2 my-2;
+    }
+}
+
+.ProseMirror :is(p.is-editor-empty:first-child, .is-empty)::before {
+    @apply text-slate-400;
+
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+button.isActive {
+    @apply text-slate-300 bg-slate-800;
+}
