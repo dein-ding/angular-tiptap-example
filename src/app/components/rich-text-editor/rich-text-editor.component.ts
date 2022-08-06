@@ -48,6 +48,8 @@ export class RichTextEditorComponent
     @Output() blur = new EventEmitter<FocusEvent>();
     @Output() focus = new EventEmitter<FocusEvent>();
 
+    // @TODO: add feature to focus the editor manually from outside
+    @Input() disabled: boolean = false;
     @Input() placeholder: string = '';
     @Input() config: Record<keyof EditorConfig, true> = {
         bold: true,
@@ -65,6 +67,7 @@ export class RichTextEditorComponent
     isFocused = false;
     editor = new Editor({
         content: this.value,
+        editable: !this.disabled,
         extensions: [
             StarterKit,
             Placeholder.configure({
