@@ -6,6 +6,7 @@ export interface EditorConfig {
     strike?: boolean;
     headings?: boolean;
     lists?: boolean;
+    taskLists?: boolean;
     code?: boolean;
     rule?: boolean;
     undoRedo?: boolean;

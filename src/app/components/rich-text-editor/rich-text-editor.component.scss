@@ -37,6 +37,27 @@
     pre code {
         @apply block px-3 py-2 my-2;
     }
+
+    ul[data-type="taskList"] {
+        @apply ml-0.5 list-none;
+
+        p {
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+
+            & > label {
+                flex: 0 0 auto;
+                @apply mr-2 select-none;
+            }
+
+            & > div {
+                flex: 1 1 auto;
+            }
+        }
+    }
 }
 
 .ProseMirror :is(p.is-editor-empty:first-child, .is-empty)::before {

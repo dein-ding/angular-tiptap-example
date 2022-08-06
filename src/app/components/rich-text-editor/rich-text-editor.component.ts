@@ -11,6 +11,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ChainedCommands, Editor } from '@tiptap/core';
 import Placeholder from '@tiptap/extension-placeholder';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
 import StarterKit from '@tiptap/starter-kit';
 import { formattingControls } from './formatting-controls';
 import { EditorConfig } from './types';
@@ -46,12 +48,14 @@ export class RichTextEditorComponent
     @Output() blur = new EventEmitter<FocusEvent>();
     @Output() focus = new EventEmitter<FocusEvent>();
 
-    @Input() config: EditorConfig = {
+    @Input() placeholder: string = '';
+    @Input() config: Record<keyof EditorConfig, true> = {
         bold: true,
         italic: true,
         strike: true,
         headings: true,
         lists: true,
+        taskLists: true,
         rule: true,
         code: true,
         undoRedo: true,
@@ -65,15 +69,18 @@ export class RichTextEditorComponent
             StarterKit,
             Placeholder.configure({
                 emptyEditorClass: 'is-editor-empty',
-                placeholder: ({ node }) => {
+                placeholder: ({ node, editor }) => {
                     if (node.type.name == 'heading')
                         return 'Heading ' + node.attrs.level;
 
-                    // Maybe ripp that out
-                    if (node.type.name == 'paragraph') return 'Text';
+                    if (editor.isEmpty) return this.placeholder;
 
                     return '';
                 },
+            }),
+            TaskList,
+            TaskItem.configure({
+                nested: true,
             }),
         ],
         onFocus: ({ event }) => {

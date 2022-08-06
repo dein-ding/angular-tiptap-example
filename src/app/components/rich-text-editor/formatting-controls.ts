@@ -82,6 +82,14 @@ export const formattingControls: FormattingButton[] = [
         testName: 'ol',
     },
     {
+        configKey: 'lists',
+        title: 'Task List',
+        slot: 'tl',
+        isActive: (editor) => editor.isActive('taskList'),
+        action: (chain) => chain.toggleTaskList(),
+        testName: 'tl',
+    },
+    {
         configKey: 'code',
         title: 'Inline Code',
         slot: '&lt;/>',
