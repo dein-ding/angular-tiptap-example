@@ -44,12 +44,17 @@ export class RichTextEditorComponent
         this.editor.destroy();
     }
 
+    log(e: Event) {
+        console.log(e);
+    }
+
     value: string = '';
     @Output() blur = new EventEmitter<FocusEvent>();
     @Output() focus = new EventEmitter<FocusEvent>();
 
     // @TODO: add feature to focus the editor manually from outside
     @Input() disabled: boolean = false;
+    @Input() disableMultiline = false;
     @Input() placeholder: string = '';
     @Input() config: Record<keyof EditorConfig, true> = {
         bold: true,
@@ -69,7 +74,18 @@ export class RichTextEditorComponent
         content: this.value,
         editable: !this.disabled,
         extensions: [
-            StarterKit,
+            StarterKit.configure(
+                this.disableMultiline
+                    ? {
+                          heading: false,
+                          horizontalRule: false,
+                          bulletList: false,
+                          orderedList: false,
+                          code: false,
+                          codeBlock: false,
+                      }
+                    : {}
+            ),
             Placeholder.configure({
                 emptyEditorClass: 'is-editor-empty',
                 placeholder: ({ node, editor }) => {
@@ -104,7 +120,20 @@ export class RichTextEditorComponent
                 this.isFocused = false;
             }
         },
-        onUpdate: ({ editor }) => this.propagateChange(editor.getHTML()),
+        onUpdate: ({ editor }) => {
+            const content = editor.getHTML();
+
+            if (this.disableMultiline) {
+                const paragraphRegex =
+                    /(<p>(?:(?!<\/p><p>).)+<\/p>)|(<p><\/p>)/g;
+                const strippedContent =
+                    content.match(paragraphRegex)?.[0] || '';
+                this.propagateChange(strippedContent);
+                this.editor.commands.setContent(strippedContent, false);
+                return;
+            }
+            this.propagateChange(content);
+        },
         // @TODO: figure out a good solution to limit the editor to one line (having ENTER submit something)
         // onCreate: () => {
         //     this.editor.view.dom.addEventListener('keydown', (e) => {

@@ -15,5 +15,5 @@
         ></button>
     </div>
 
-    <tiptap-editor [editor]="editor"></tiptap-editor>
+    <tiptap-editor [editor]="editor" (keydown.enter)="log($event)"></tiptap-editor>
 </div>
